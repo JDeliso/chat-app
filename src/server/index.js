@@ -1,7 +1,8 @@
 var express = require('express');  
 var app = express();  
 var server = require('http').createServer(app);  
-const io = require("socket.io")(server, {
+var io = require('socket.io')(server, { 
+    wsEngine: 'ws',
     cors: {
       origin: "http://localhost:3000",
       methods: ["GET", "POST"],
@@ -9,14 +10,12 @@ const io = require("socket.io")(server, {
     }
 });
 
-app.use(express.static(__dirname + '/node_modules')); 
-
-io.on('connection', function(client) {
+io.on('connection', function(socket) {
     console.log('Client connected...');
-    client.on('join', function(data) {
-       console.log(data);
-       client.emit('messages', 'Hello from server');
-    });
+    socket.on('chat message', function(msg){
+        // console.log('message: ' + JSON.stringify(msg));
+        io.emit('chat message', msg);
+    })
 });
 
 server.listen(3001, function(){

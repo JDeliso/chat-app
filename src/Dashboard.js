@@ -1,5 +1,5 @@
 import React from "react"
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
@@ -48,7 +48,7 @@ export default function Dashboard() {
     const classes = useStyles();
 
     // CTX Store
-    const {allChats, sendChatAction} = React.useContext(CTX); 
+    const {allChats, sendChatAction, user} = React.useContext(CTX); 
     const topics = Object.keys(allChats);
 
     const [activeTopic, changeActiveTopic] = React.useState(topics[0]);
@@ -114,7 +114,7 @@ export default function Dashboard() {
                         color="primary" 
                         className={classes.button}
                         onClick={() => {
-                            sendChatAction(textValue);
+                            sendChatAction({from: user, msg: textValue, topic: activeTopic});
                             changeTextValue('');
                         }}
                         >
